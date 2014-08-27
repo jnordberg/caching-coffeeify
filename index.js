@@ -25,8 +25,12 @@ module.exports = function (file) {
 
     if (!cached || cached.hash !== hash) {
       coffeeify.compile(file, data, function(error, result) {
-        if (error) stream.emit('error', error);
-        cache[file] = { compiled: result, hash: hash };
+        if (error) {
+          stream.emit('error', error);
+          delete cache[file];
+        } else {
+          cache[file] = { compiled: result, hash: hash };
+        }
         stream.queue(result);
         stream.queue(null);
       });

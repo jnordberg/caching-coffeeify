@@ -12,7 +12,7 @@ function getHash(data) {
     .digest('hex');
 }
 
-module.exports = function (file) {
+function cachingCoffeify(file) {
   if (!coffeeify.isCoffee(file)) return through();
 
   var data = ''
@@ -42,3 +42,8 @@ module.exports = function (file) {
 
   return stream;
 };
+
+cachingCoffeify.cache = cache;
+
+
+module.exports = cachingCoffeify;
